@@ -15,36 +15,58 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LuxuryBackground()
+                Theme.backgroundGradient
+                    .ignoresSafeArea()
+                
                 AnimatedAuroraLayer()
+                
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 26) {
-                        DashboardHeader(name: appState.userName, projectCount: appState.projects.count, pulse: pulse)
-
-                        SectionLabel(title: "AI Studio", caption: "Tap a module to begin")
-
-                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 14), GridItem(.flexible(), spacing: 14)], spacing: 14) {
-                            ForEach(Array(DashboardFeature.all.enumerated()), id: \.element.id) { index, feature in
-                                NavigationLink(value: feature.id) {
-                                    DashboardCard(feature: feature, index: index)
+                    VStack(spacing: Theme.Spacing.xl) {
+                        // Dashboard Header
+                        SmoothTransition {
+                            DashboardHeader(name: appState.userName, projectCount: appState.projects.count, pulse: pulse)
+                        }
+                        
+                        // AI Studio Section
+                        VStack(spacing: Theme.Spacing.lg) {
+                            SectionLabel(title: "AI Studio", caption: "Tap a module to begin")
+                            
+                            LazyVGrid(columns: [
+                                GridItem(.flexible(), spacing: Theme.Spacing.md),
+                                GridItem(.flexible(), spacing: Theme.Spacing.md)
+                            ], spacing: Theme.Spacing.md) {
+                                ForEach(Array(DashboardFeature.all.enumerated()), id: \.element.id) { index, feature in
+                                    NavigationLink(value: feature.id) {
+                                        PremiumDashboardCard(feature: feature, index: index)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .opacity(appearedIndices.contains(index) ? 1 : 0)
+                                    .offset(y: appearedIndices.contains(index) ? 0 : 30)
+                                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(Double(index) * 0.1), value: appearedIndices)
+                                    .onTapGesture {
+                                        HapticFeedbackManager.shared.selection()
+                                    }
                                 }
-                                .buttonStyle(.plain)
-                                .opacity(appearedIndices.contains(index) ? 1 : 0)
-                                .offset(y: appearedIndices.contains(index) ? 0 : 24)
-                                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(Double(index) * 0.07), value: appearedIndices)
                             }
                         }
-
+                        
+                        // Recent Projects
                         if !appState.projects.isEmpty {
-                            SectionLabel(title: "Recent concepts", caption: "Continue where you left off")
-                            ForEach(appState.projects.prefix(2)) { project in
-                                ProjectCard(project: project)
+                            VStack(spacing: Theme.Spacing.lg) {
+                                SectionLabel(title: "Recent concepts", caption: "Continue where you left off")
+                                
+                                VStack(spacing: Theme.Spacing.md) {
+                                    ForEach(appState.projects.prefix(2)) { project in
+                                        PremiumProjectCard(project: project)
+                                    }
+                                }
                             }
                         }
                     }
-                    .padding(20)
-                    .padding(.bottom, 40)
+                    .padding(Theme.Spacing.lg)
+                    .padding(.bottom, Theme.Spacing.xxl)
                 }
+                .scrollIndicators(.hidden)
             }
             .navigationBarHidden(true)
             .navigationDestination(for: DashboardRoute.self) { route in
@@ -76,43 +98,50 @@ struct DashboardHeader: View {
     let pulse: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack(spacing: 10) {
-                ZStack {
-                    Circle()
-                        .fill(Theme.gold.opacity(0.18))
-                        .frame(width: 10, height: 10)
-                        .scaleEffect(pulse ? 2.6 : 1)
-                        .opacity(pulse ? 0 : 1)
-                        .animation(.easeOut(duration: 1.6).repeatForever(autoreverses: false), value: pulse)
-                    Circle()
-                        .fill(Theme.gold)
-                        .frame(width: 7, height: 7)
+        VStack(spacing: Theme.Spacing.lg) {
+            // Status Bar
+            HStack(spacing: Theme.Spacing.sm) {
+                PulsingView {
+                    HStack(spacing: Theme.Spacing.xs) {
+                        Circle()
+                            .fill(Theme.saudiGold)
+                            .frame(width: 8, height: 8)
+                        Text("ARCHAI · ONLINE")
+                            .font(Theme.Typography.caption2)
+                            .fontWeight(.bold)
+                            .tracking(2.4)
+                            .foregroundStyle(Theme.saudiGold)
+                    }
                 }
-                Text("ARCHAI · ONLINE")
-                    .font(.caption2.weight(.bold))
-                    .tracking(2.4)
-                    .foregroundStyle(Theme.gold)
+                
                 Spacer()
+                
                 Text("v1.0")
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.4))
+                    .font(Theme.Typography.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Theme.textTertiary)
             }
-
-            VStack(alignment: .leading, spacing: 6) {
+            
+            // Welcome Section
+            VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
                 Text("Welcome,")
-                    .font(.title3)
-                    .foregroundStyle(.white.opacity(0.55))
+                    .font(Theme.Typography.title3)
+                    .foregroundStyle(Theme.textSecondary)
+                
                 Text(name)
-                    .font(.system(size: 40, weight: .bold, design: .serif))
-                    .foregroundStyle(.white)
+                    .font(Theme.Typography.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Theme.textPrimary)
+                
                 Text("Design futuristic spaces with AI as your co-architect.")
-                    .font(.callout)
-                    .foregroundStyle(.white.opacity(0.62))
+                    .font(Theme.Typography.callout)
+                    .foregroundStyle(Theme.textSecondary)
                     .lineSpacing(2)
             }
-
-            HStack(spacing: 10) {
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Stats Cards
+            HStack(spacing: Theme.Spacing.md) {
                 MetricCard(icon: "square.stack.3d.up.fill", value: "\(projectCount)", label: "Projects")
                 MetricCard(icon: "sparkles", value: "6", label: "AI Modules")
                 MetricCard(icon: "bolt.fill", value: "Live", label: "Engine")
@@ -127,23 +156,158 @@ struct MetricCard: View {
     let label: String
 
     var body: some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.caption.weight(.bold))
-                .foregroundStyle(Theme.gold)
-            VStack(alignment: .leading, spacing: 0) {
-                Text(value)
-                    .font(.subheadline.weight(.bold))
-                    .foregroundStyle(.white)
-                Text(label)
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.5))
+        GlassCard {
+            HStack(spacing: Theme.Spacing.sm) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(Theme.saudiGold)
+                    .frame(width: 24, height: 24)
+                
+                VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+                    Text(value)
+                        .font(Theme.Typography.headline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Theme.textPrimary)
+                    
+                    Text(label)
+                        .font(Theme.Typography.caption2)
+                        .foregroundStyle(Theme.textSecondary)
+                }
+                
+                Spacer()
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white.opacity(0.05), in: .rect(cornerRadius: 14))
-        .overlay(.white.opacity(0.08), in: .rect(cornerRadius: 14).stroke(lineWidth: 1))
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct PremiumDashboardCard: View {
+    let feature: DashboardFeature
+    let index: Int
+    @State private var shimmer: Bool = false
+    @State private var isPressed = false
+
+    var body: some View {
+        FeatureCard(accentColor: feature.accent.first ?? Theme.primary, shadowColor: Theme.Shadow.gold) {
+            VStack(spacing: Theme.Spacing.md) {
+                // Icon and Tag
+                HStack {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: Theme.CornerRadius.medium)
+                            .fill(feature.accent.first?.opacity(0.2) ?? Theme.primary.opacity(0.2))
+                            .frame(width: 50, height: 50)
+                        
+                        Image(systemName: feature.icon)
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(feature.accent.first ?? Theme.primary)
+                    }
+                    
+                    Spacer()
+                    
+                    Text(feature.tag)
+                        .font(Theme.Typography.caption2)
+                        .fontWeight(.heavy)
+                        .tracking(1.2)
+                        .foregroundStyle(Theme.background)
+                        .padding(.horizontal, Theme.Spacing.sm)
+                        .padding(.vertical, Theme.Spacing.xs)
+                        .background(
+                            RoundedRectangle(cornerRadius: Theme.CornerRadius.small)
+                                .fill(feature.accent.first ?? Theme.primary)
+                        )
+                }
+                
+                // Content
+                VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+                    Text(feature.title)
+                        .font(Theme.Typography.headline)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Theme.textPrimary)
+                        .multilineTextAlignment(.leading)
+                    
+                    Text(feature.subtitle)
+                        .font(Theme.Typography.caption1)
+                        .foregroundStyle(Theme.textSecondary)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                // Shimmer Effect
+                RoundedRectangle(cornerRadius: Theme.CornerRadius.medium)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                .clear,
+                                .white.opacity(0.3),
+                                .clear
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .scaleEffect(shimmer ? 2.5 : 0.5)
+                    .offset(x: shimmer ? 200 : -200)
+                    .opacity(0.6)
+                    .clipped()
+            }
+            .padding(Theme.Spacing.lg)
+            .frame(height: 140)
+        }
+        .scaleEffect(isPressed ? 0.95 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+        .onTapGesture {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                isPressed = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isPressed = false
+            }
+        }
+        .onAppear {
+            shimmer = true
+        }
+    }
+}
+
+struct PremiumProjectCard: View {
+    let project: DesignProject
+    @State private var isVisible = false
+
+    var body: some View {
+        PremiumCard(shadowColor: Theme.Shadow.card) {
+            VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+                HStack {
+                    VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
+                        Text(project.title)
+                            .font(Theme.Typography.headline)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Theme.textPrimary)
+                        
+                        Text("\(project.landSize) • \(project.floors) floors • \(project.bedrooms) bedrooms")
+                            .font(Theme.Typography.caption1)
+                            .foregroundStyle(Theme.textSecondary)
+                    }
+                    
+                    Spacer()
+                    
+                    IconButton("chevron.right", style: .ghost) {
+                        HapticFeedbackManager.shared.selection()
+                    }
+                }
+                
+                Text(project.result.styleDescription)
+                    .font(Theme.Typography.callout)
+                    .foregroundStyle(Theme.textSecondary)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+            }
+        }
+        .opacity(isVisible ? 1 : 0)
+        .offset(y: isVisible ? 0 : 20)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: isVisible)
+        .onAppear {
+            isVisible = true
+        }
     }
 }

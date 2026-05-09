@@ -13,60 +13,107 @@ struct AuthFlowView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var name: String = ""
+    @State private var isAnimating = false
+    @State private var showContent = false
 
     var body: some View {
         ZStack {
-            LuxuryBackground()
+            Theme.backgroundGradient
+                .ignoresSafeArea()
+            
             ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    Spacer(minLength: 56)
-                    VStack(alignment: .leading, spacing: 14) {
-                        Text("ArchAI")
-                            .font(.system(size: 54, weight: .black, design: .serif))
-                            .foregroundStyle(Theme.goldGradient)
-                        Text("Planner")
-                            .font(.system(size: 46, weight: .semibold, design: .serif))
-                            .foregroundStyle(.white)
-                        Text("Generate architectural concepts, early layouts, room distributions, and refined villa ideas with AI.")
-                            .font(.title3)
-                            .foregroundStyle(.white.opacity(0.72))
-                            .lineSpacing(4)
-                    }
-
-                    VStack(spacing: 14) {
-                        if isSignup {
-                            LuxuryTextField(title: "Full name", text: $name, icon: "person")
-                        }
-                        LuxuryTextField(title: "Email", text: $email, icon: "envelope")
-                        LuxurySecureField(title: "Password", text: $password, icon: "lock")
-
-                        Button {
-                            appState.userName = name.isEmpty ? "Founder" : name
-                            appState.isAuthenticated = true
-                        } label: {
-                            Text(isSignup ? "Create account" : "Enter studio")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(GoldButtonStyle())
-
-                        Button {
-                            withAnimation(.spring(response: 0.38, dampingFraction: 0.86)) {
-                                isSignup.toggle()
+                VStack(spacing: Theme.Spacing.xl) {
+                    Spacer(minLength: Theme.Spacing.xl)
+                    
+                    // Header Section
+                    VStack(spacing: Theme.Spacing.lg) {
+                        FadeInScale(delay: 0) {
+                            VStack(spacing: Theme.Spacing.sm) {
+                                Text("ArchAI")
+                                    .font(Theme.Typography.largeTitle)
+                                    .fontWeight(.black)
+                                    .foregroundStyle(Theme.saudiGoldGradient)
+                                
+                                Text("Planner")
+                                    .font(Theme.Typography.title1)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Theme.textPrimary)
                             }
-                        } label: {
-                            Text(isSignup ? "Already have an account? Login" : "New here? Create an account")
-                                .font(.callout.weight(.medium))
-                                .foregroundStyle(Theme.gold)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
+                        }
+                        
+                        FadeInScale(delay: 0.2) {
+                            Text("Generate architectural concepts, early layouts, room distributions, and refined villa ideas with AI.")
+                                .font(Theme.Typography.callout)
+                                .foregroundStyle(Theme.textSecondary)
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(2)
                         }
                     }
-                    .padding(18)
-                    .background(.white.opacity(0.06), in: .rect(cornerRadius: 28))
-                    .overlay(.white.opacity(0.12), in: .rect(cornerRadius: 28).stroke(lineWidth: 1))
+                    
+                    // Auth Form
+                    PremiumCard(shadowColor: Theme.Shadow.gold, shadowRadius: 20) {
+                        VStack(spacing: Theme.Spacing.lg) {
+                            if isSignup {
+                                StaggeredAnimation(baseDelay: 0.3) {
+                                    ModernTextField("Full name", text: $name, icon: "person")
+                                }
+                            }
+                            
+                            StaggeredAnimation(baseDelay: 0.4) {
+                                ModernTextField("Email", text: $email, icon: "envelope", keyboardType: .emailAddress)
+                            }
+                            
+                            StaggeredAnimation(baseDelay: 0.5) {
+                                ModernTextField("Password", text: $password, icon: "lock", isSecure: true)
+                            }
+                            
+                            StaggeredAnimation(baseDelay: 0.6) {
+                                ModernButton(
+                                    isSignup ? "Create account" : "Enter studio",
+                                    style: .primary,
+                                    isLoading: isAnimating
+                                ) {
+                                    authenticate()
+                                }
+                            }
+                            
+                            StaggeredAnimation(baseDelay: 0.7) {
+                                Button {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                        isSignup.toggle()
+                                    }
+                                    HapticFeedbackManager.shared.selection()
+                                } label: {
+                                    Text(isSignup ? "Already have an account? Login" : "New here? Create an account")
+                                        .font(Theme.Typography.callout)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(Theme.saudiGold)
+                                        .multilineTextAlignment(.center)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, Theme.Spacing.lg)
                 }
-                .padding(22)
+                .padding(.vertical, Theme.Spacing.xl)
             }
+            .scrollIndicators(.hidden)
+        }
+        .onAppear {
+            showContent = true
+        }
+    }
+    
+    private func authenticate() {
+        isAnimating = true
+        HapticFeedbackManager.shared.medium()
+        
+        // Simulate authentication delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            appState.userName = name.isEmpty ? "Founder" : name
+            appState.isAuthenticated = true
+            HapticFeedbackManager.shared.success()
+            isAnimating = false
         }
     }
 }

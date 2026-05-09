@@ -12,33 +12,51 @@ class ProjectManager: ObservableObject {
     @Published var savedProjects: [AIResult] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var configurationStatus: ConfigurationStatus
     
     private let userDefaults = UserDefaults.standard
     private let projectsKey = "saved_architecture_projects"
+    private let aiService = AIService()
+    private let supabaseService = SupabaseService()
     
     init() {
+        self.configurationStatus = APIConfig.validateConfiguration()
         loadProjects()
     }
     
     // MARK: - Save Project
-    func saveProject(_ project: AIResult) {
+    func saveProject(_ project: AIResult) async {
         isLoading = true
         errorMessage = nil
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            // Check if project already exists
-            if !self.savedProjects.contains(where: { $0.id == project.id }) {
-                self.savedProjects.insert(project, at: 0)
-                self.saveToUserDefaults()
-                
-                // Show success feedback
-                HapticFeedback.shared.light()
+        do {
+            let savedProject: AIResult
+            
+            if APIConfig.isDemoMode {
+                // Fallback to local storage in demo mode
+                if !savedProjects.contains(where: { $0.id == project.id }) {
+                    savedProjects.insert(project, at: 0)
+                    saveToUserDefaults()
+                    savedProject = project
+                } else {
+                    throw ProjectManagerError.projectAlreadyExists
+                }
             } else {
-                self.errorMessage = "Project already saved"
+                // Use real backend
+                savedProject = try await supabaseService.saveProject(project)
+                // Also update local cache
+                if !savedProjects.contains(where: { $0.id == project.id }) {
+                    savedProjects.insert(savedProject, at: 0)
+                    saveToUserDefaults()
+                }
             }
             
-            self.isLoading = false
+            HapticFeedback.shared.light()
+        } catch {
+            errorMessage = error.localizedDescription
         }
+        
+        isLoading = false
     }
     
     // MARK: - Remove Project
@@ -144,26 +162,11 @@ class ProjectManager: ObservableObject {
         }
     }
     
-    private func loadProjects() {
-        guard let data = userDefaults.data(forKey: projectsKey) else { return }
-        
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        
-        do {
-            savedProjects = try decoder.decode([AIResult].self, from: data)
-        } catch {
-            errorMessage = "Failed to load projects: \(error.localizedDescription)"
-            savedProjects = []
+    // MARK: - Project Statistics
+    extension ProjectManager {
+        var totalProjectsCount: Int {
+            savedProjects.count
         }
-    }
-}
-
-// MARK: - Project Statistics
-extension ProjectManager {
-    var totalProjectsCount: Int {
-        savedProjects.count
-    }
     
     var totalBudgetValue: Double {
         savedProjects.reduce(0) { $0 + $1.budget.totalWithContingency }
@@ -188,6 +191,25 @@ extension ProjectManager {
         return savedProjects.filter { project in
             calendar.isDate(project.timestamp, equalTo: now, toGranularity: .month)
         }.count
+    }
+}
+    
+    // MARK: - Project Manager Error
+    enum ProjectManagerError: LocalizedError {
+        case projectAlreadyExists
+        case saveFailed
+        case loadFailed
+        
+        var errorDescription: String? {
+            switch self {
+            case .projectAlreadyExists:
+                return "Project already exists in your collection"
+            case .saveFailed:
+                return "Failed to save project"
+            case .loadFailed:
+                return "Failed to load projects"
+            }
+        }
     }
 }
 

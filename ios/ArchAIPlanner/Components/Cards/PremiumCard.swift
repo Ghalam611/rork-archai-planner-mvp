@@ -12,61 +12,62 @@ struct PremiumCard<Content: View>: View {
     let padding: CGFloat
     let shadowColor: Color
     let shadowRadius: CGFloat
+    let cornerRadius: CGFloat
+    let backgroundColor: AnyShapeStyle
+    let borderColor: Color
+    let borderWidth: CGFloat
     
     init(
         padding: CGFloat = Theme.Spacing.lg,
-        shadowColor: Color = Theme.Shadow.card,
-        shadowRadius: CGFloat = 12,
+        shadowColor: Color = Theme.Shadow.premium,
+        shadowRadius: CGFloat = 16,
+        cornerRadius: CGFloat = Theme.CornerRadius.xxlarge,
+        backgroundColor: AnyShapeStyle = AnyShapeStyle(Theme.luxuryCardGradient),
+        borderColor: Color = Theme.border,
+        borderWidth: CGFloat = 1,
         @ViewBuilder content: () -> Content
     ) {
         self.content = content()
         self.padding = padding
         self.shadowColor = shadowColor
         self.shadowRadius = shadowRadius
+        self.cornerRadius = cornerRadius
+        self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
     }
     
     var body: some View {
         content
             .padding(padding)
             .background(
-                RoundedRectangle(cornerRadius: Theme.CornerRadius.xxlarge)
-                    .fill(Theme.luxuryCardGradient)
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(backgroundColor)
                     .overlay(
-                        RoundedRectangle(cornerRadius: Theme.CornerRadius.xxlarge)
-                            .stroke(Theme.border, lineWidth: 1)
+                        RoundedRectangle(cornerRadius: cornerRadius)
+                            .stroke(
+                                LinearGradient(
+                                    colors: [
+                                        Theme.royalGold.opacity(0.3),
+                                        Theme.saudiGold.opacity(0.2),
+                                        Theme.royalGold.opacity(0.1)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: borderWidth
+                            )
                     )
             )
             .shadow(
                 color: shadowColor,
                 radius: shadowRadius,
                 x: 0,
-                y: 8
+                y: 12
             )
     }
 }
 
-struct GlassCard<Content: View>: View {
-    let content: Content
-    let padding: CGFloat
-    
-    init(padding: CGFloat = Theme.Spacing.md, @ViewBuilder content: () -> Content) {
-        self.content = content()
-        self.padding = padding
-    }
-    
-    var body: some View {
-        content
-            .padding(padding)
-            .background(
-                RoundedRectangle(cornerRadius: Theme.CornerRadius.large)
-                    .fill(.ultraThinMaterial)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: Theme.CornerRadius.large)
-                            .stroke(Theme.border, lineWidth: 1)
-                    )
-            )
-    }
-}
 
 struct FeatureCard<Content: View>: View {
     let content: Content
@@ -131,22 +132,6 @@ struct FeatureCard<Content: View>: View {
     .background(Theme.background)
 }
 
-#Preview("Glass Card") {
-    GlassCard {
-        VStack(spacing: Theme.Spacing.sm) {
-            Image(systemName: "diamond.fill")
-                .font(.system(size: 24))
-                .foregroundStyle(Theme.saudiGold)
-            
-            Text("Glass Morphism")
-                .font(Theme.Typography.headline)
-                .fontWeight(.semibold)
-                .foregroundStyle(Theme.textPrimary)
-        }
-    }
-    .padding()
-    .background(Theme.backgroundGradient)
-}
 
 #Preview("Feature Card") {
     FeatureCard(accentColor: Theme.accentEmerald, shadowColor: Theme.Shadow.gold) {

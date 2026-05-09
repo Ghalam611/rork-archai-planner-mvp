@@ -10,54 +10,86 @@ import Foundation
 // MARK: - Mock Data Provider
 struct MockData {
     
-    // MARK: - Design Projects
+    // MARK: - Premium Design Projects
     static let projects: [DesignProject] = [
         DesignProject(
             id: UUID(),
-            title: "Najdi Courtyard Villa",
-            style: "Modern Najdi Luxury",
-            landSize: "900 sqm",
-            floors: "2",
-            bedrooms: "5",
-            createdAt: Date().addingTimeInterval(-86400), // 1 day ago
-            result: DesignResult(
-                spaceDistribution: "Ground floor: formal men's majlis near a private guest entry, family living facing the garden, women's majlis connected to dining, service core placed discreetly behind the kitchen. Upper floor: bedroom suites arranged around a quiet family lounge.",
-                roomLayout: "Create a central courtyard spine with visual access from living, dining, and circulation. Keep guest, family, and service zones separated for privacy and smooth movement.",
-                entranceIdeas: "A recessed gold-lit portal with stone fins, separate ceremonial guest door, and shaded family entry beside a planted arrival court.",
-                styleDescription: "A refined blend of warm limestone, bronze screens, deep shadow lines, and minimal AI-optimized proportions inspired by Gulf contemporary architecture.",
-                improvements: "Add cross-ventilation corridors, solar shading on west facades, a service yard behind the kitchen, and flexible room dimensions for future expansion."
-            )
-        ),
-        DesignProject(
-            id: UUID(),
-            title: "Andalusian Garden Palace",
-            style: "Classic Andalusian Revival",
-            landSize: "1200 sqm",
+            title: "Royal Najdi Courtyard Estate",
+            style: "Modern Najdi Luxury with Traditional Elements",
+            landSize: "1,200 sqm",
             floors: "3",
             bedrooms: "7",
-            createdAt: Date().addingTimeInterval(-172800), // 2 days ago
+            createdAt: Date().addingTimeInterval(-86400), // 1 day ago
             result: DesignResult(
-                spaceDistribution: "Ground floor: grand entrance hall with double-height ceiling, formal reception rooms, and library. First floor: family living spaces with terrace access. Second floor: master suite and guest bedrooms with private balconies.",
-                roomLayout: "Organize around central courtyard with fountain. Place public rooms at front, private family areas in center, service spaces at rear. Create vertical circulation via grand staircase and service elevator.",
-                entranceIdeas: "Moorish archway with intricate geometric patterns, carved wooden doors with bronze hardware, and a reflecting pool leading to main entrance. Side entrance for family and service access.",
-                styleDescription: "Traditional Andalusian architecture with horseshoe arches, ornate tilework, carved stucco facades, and lush interior courtyards with water features.",
-                improvements: "Incorporate passive cooling through wind towers, maximize natural ventilation, add solar panels on roof, and create rainwater harvesting system for gardens."
+                spaceDistribution: "Ground floor: grand entrance hall with double-height ceiling, formal men's majlis with private entrance, family living area facing central courtyard, women's majlis connected through elegant transition, service core with modern kitchen and staff quarters. Second floor: master bedroom suite with private terrace, three additional bedrooms, family lounge, and library. Third floor: rooftop entertainment deck with panoramic views.",
+                roomLayout: "Create U-shaped layout around central courtyard with water feature and traditional mashrabiya design. Separate guest circulation through dedicated corridor with privacy screens. Use double-height spaces for dramatic effect. Place service areas at rear for discreet operation.",
+                entranceIdeas: "Majestic entrance with royal gold archway, intricate geometric patterns in stone, bronze-clad doors with traditional hardware, reflecting pool with floating stepping stones, and separate ceremonial guest entrance with grand porte-cochère. Family entrance through shaded garden path with traditional lantern lighting.",
+                styleDescription: "Luxurious fusion of traditional Najdi architecture with contemporary luxury materials. Features warm limestone facades with gold inlay, bronze mashrabiya screens for privacy, deep shadow lines for dramatic effect, and floor-to-ceiling windows overlooking courtyard. Interior combines traditional arabesque patterns with modern minimalism.",
+                improvements: "Incorporate traditional wind towers for natural cooling, install smart glass facades that can transition from transparent to opaque, add rooftop garden with traditional irrigation system, and create underground parking with elevator access."
             )
         ),
         DesignProject(
             id: UUID(),
-            title: "Japandi Minimalist Retreat",
-            style: "Modern Japandi Fusion",
-            landSize: "600 sqm",
+            title: "Andalusian Heritage Palace",
+            style: "Classic Andalusian with Modern Luxury",
+            landSize: "1,500 sqm",
+            floors: "3",
+            bedrooms: "8",
+            createdAt: Date().addingTimeInterval(-172800), // 2 days ago
+            result: DesignResult(
+                spaceDistribution: "Ground floor: grand double-height entrance hall with fountain, formal reception rooms, library with traditional arabesque ceiling, and ceremonial spaces. First floor: family living areas with indoor-outdoor flow, dining room with terrace access, and informal family areas. Second floor: master suite with private courtyard view, guest bedrooms with en-suite bathrooms, and family lounge.",
+                roomLayout: "Organize around central courtyard with traditional Andalusian garden featuring geometric patterns, water channels, and citrus trees. Create hierarchical circulation with grand central staircase and service elevators. Use traditional patio spaces for climate control. Maintain clear separation between public and private family areas.",
+                entranceIdeas: "Grand horseshoe archway with intricate geometric tilework, carved cedar doors with bronze knockers, reflecting pool with mosaic tiles, and traditional lantern lighting. Side entrance through garden path with traditional water features and shaded seating areas.",
+                styleDescription: "Magnificent interpretation of Andalusian palace architecture with modern luxury amenities. Features intricate stucco facades with arabesque patterns, horseshoe arches throughout, ornate tilework with traditional motifs, carved wooden ceilings, and interior courtyards with water features. Gold accents highlight traditional architectural elements.",
+                improvements: "Install traditional cooling systems using wind towers and water channels, maximize natural ventilation through strategically placed windows, add solar tiles on roof that blend with traditional design, and create rainwater harvesting system for traditional gardens."
+            )
+        ),
+        DesignProject(
+            id: UUID(),
+            title: "Modern Islamic Heritage Villa",
+            style: "Contemporary Islamic Architecture",
+            landSize: "800 sqm",
             floors: "2",
-            bedrooms: "4",
+            bedrooms: "5",
             createdAt: Date().addingTimeInterval(-259200), // 3 days ago
             result: DesignResult(
-                spaceDistribution: "Ground floor: open-plan living-dining-kitchen with floor-to-ceiling glass walls, meditation room, and guest suite. Upper floor: master bedroom with private terrace, two additional bedrooms, and home office.",
-                roomLayout: "Create L-shaped layout around central zen garden. Use sliding shoji screens for flexible space division. Maintain clean sight lines and minimal corridor space.",
-                entranceIdeas: "Simple wooden gate with stone pathway, minimalist entrance with hidden door hardware, and a small water basin for ritual purification. Frame view of zen garden from entry.",
-                styleDescription: "Harmonious blend of Japanese minimalism and Scandinavian coziness with natural materials, clean lines, neutral color palette, and emphasis on craftsmanship and simplicity.",
-                improvements: "Use sustainable bamboo flooring, install smart home automation for climate control, add green roof for insulation, and incorporate passive solar design principles."
+                spaceDistribution: "Ground floor: open-plan living area with double-height space, formal dining room with traditional mashrabiya screens, modern kitchen with island, guest bedroom suite, and prayer room. Second floor: master bedroom with private terrace, three additional bedrooms, family lounge, and home office with balcony access.",
+                roomLayout: "Create L-shaped layout with central atrium bringing natural light throughout. Use sliding panels for flexible space division. Incorporate traditional geometric patterns in modern interpretation. Maintain clear sight lines between spaces while respecting traditional privacy requirements.",
+                entranceIdeas: "Modern interpretation of traditional entrance with geometric patterns in stone and glass, grand wooden doors with traditional hardware in contemporary finish, water feature with modern fountain design, and integrated landscape lighting. Separate service entrance with discreet access.",
+                styleDescription: "Contemporary interpretation of Islamic architectural principles with modern materials and technology. Features clean geometric patterns, abundant natural light, sustainable materials, and smart home integration while respecting traditional design vocabulary.",
+                improvements: "Incorporate passive cooling through traditional courtyard design, use smart glass that can provide privacy when needed, install solar panels in traditional patterns, and create indoor-outdoor living spaces that respect cultural requirements."
+            )
+        ),
+        DesignProject(
+            id: UUID(),
+            title: "Desert Modern Oasis",
+            style: "Sustainable Desert Architecture",
+            landSize: "1,000 sqm",
+            floors: "2",
+            bedrooms: "6",
+            createdAt: Date().addingTimeInterval(-345600), // 4 days ago
+            result: DesignResult(
+                spaceDistribution: "Ground floor: living area with desert views, modern kitchen with large island, dining room with terrace, guest suite, and indoor garden with native desert plants. Second floor: master bedroom suite with private desert garden terrace, four additional bedrooms, family lounge, and home theater.",
+                roomLayout: "Create H-shaped layout maximizing desert views from all major rooms. Use thick walls for thermal mass and natural cooling. Incorporate traditional courtyard elements for climate control. Design indoor-outdoor flow for desert lifestyle.",
+                entranceIdeas: "Modern entrance inspired by desert dunes with flowing lines, natural stone materials, integrated water feature representing oasis, and landscape lighting that creates dramatic nighttime effect. Use traditional shading devices in contemporary interpretation.",
+                styleDescription: "Sustainable luxury architecture inspired by desert landscapes and traditional oasis design. Features earth-toned materials, natural cooling systems, solar integration, and water conservation while maintaining modern luxury aesthetic. Gold accents used sparingly for elegant emphasis.",
+                improvements: "Install advanced water recycling and desalination systems, use phase-change materials for thermal regulation, incorporate traditional wind catchers in modern design, and create rooftop garden with desert vegetation for insulation."
+            )
+        ),
+        DesignProject(
+            id: UUID(),
+            title: "Gulf Contemporary Mansion",
+            style: "Ultra-Modern Gulf Luxury",
+            landSize: "2,000 sqm",
+            floors: "4",
+            bedrooms: "9",
+            createdAt: Date().addingTimeInterval(-432000), // 5 days ago
+            result: DesignResult(
+                spaceDistribution: "Basement: luxury entertainment center, wine cellar, gym, and service areas. Ground floor: grand entrance with triple-height atrium, formal reception areas, gallery space, and indoor pool. Second floor: family living areas with garden access, formal dining room, and informal spaces. Third floor: master suite with private elevator, additional bedrooms, and family lounge. Fourth floor: rooftop terrace with infinity pool and panoramic views.",
+                roomLayout: "Create dramatic vertical circulation with grand central staircase, glass elevator, and multiple level connections. Use double-height spaces for luxury effect. Incorporate indoor-outdoor flow throughout multiple levels. Design separate wings for different family functions while maintaining architectural cohesion.",
+                entranceIdeas: "Spectacular entrance with glass canopy, water walls, and dramatic lighting. Grand bronze doors with modern security systems. Circular driveway with fountain feature and landscape lighting. Service entrance with discreet access and loading areas.",
+                styleDescription: "Cutting-edge contemporary architecture incorporating Gulf cultural elements with ultra-modern luxury. Features glass facades with dynamic lighting, smart home systems, infinity pools, and sustainable materials. Gold accents used for dramatic effect and cultural significance.",
+                improvements: "Install advanced home automation systems, incorporate sustainable energy generation, use water recycling and treatment systems, create vertical gardens on multiple levels, and implement advanced security and climate control systems."
             )
         )
     ]

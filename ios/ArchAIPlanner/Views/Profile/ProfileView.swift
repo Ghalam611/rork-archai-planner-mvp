@@ -34,3 +34,23 @@ struct ProfileView: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Default") {
+    ProfileView(appState: MockData.authenticatedAppState)
+}
+
+#Preview("iPhone 15 Pro") {
+    ProfileView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    ProfileView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    ProfileView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPadPro.name)
+}

@@ -83,6 +83,41 @@ struct SplashView: View {
     }
 }
 
-#Preview {
+// MARK: - Preview Providers
+#Preview("Default") {
     ContentView()
+}
+
+#Preview("Authenticated") {
+    ContentView()
+        .with(MockData.authenticatedAppState)
+}
+
+#Preview("Unauthenticated") {
+    ContentView()
+        .with(MockData.unauthenticatedAppState)
+}
+
+#Preview("iPhone 15 Pro") {
+    ContentView()
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    ContentView()
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    ContentView()
+        .previewDevice(PreviewDevices.iPadPro.name)
+}
+
+// MARK: - Preview Helper
+extension ContentView {
+    func with(_ appState: AppState) -> some View {
+        var view = self
+        view._appState = State(initialValue: appState)
+        return view
+    }
 }

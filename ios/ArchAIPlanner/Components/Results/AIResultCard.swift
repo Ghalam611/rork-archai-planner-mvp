@@ -178,10 +178,44 @@ struct ResultSection: View {
     }
 }
 
-struct AIResultCard_Previews: PreviewProvider {
-    static var previews: some View {
-        AIResultCard(project: DesignProject.samples.first!)
-            .padding()
-            .background(Theme.background)
+// MARK: - Preview Providers
+#Preview("Default") {
+    AIResultCard(project: MockData.projects.first!)
+        .padding()
+        .background(Theme.background)
+}
+
+#Preview("Expanded") {
+    AIResultCard(project: MockData.projects.first!)
+        .padding()
+        .background(Theme.background)
+        .previewDisplayName("Expanded State")
+        .onAppear {
+            // Simulate expanded state
+        }
+}
+
+#Preview("Different Projects") {
+    VStack(spacing: Theme.Spacing.lg) {
+        ForEach(MockData.projects.prefix(2)) { project in
+            AIResultCard(project: project)
+        }
     }
+    .padding()
+    .background(Theme.background)
+    .previewDisplayName("Multiple Projects")
+}
+
+#Preview("iPhone 15 Pro") {
+    AIResultCard(project: MockData.projects.first!)
+        .padding()
+        .background(Theme.background)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPad Pro") {
+    AIResultCard(project: MockData.projects.first!)
+        .padding()
+        .background(Theme.background)
+        .previewDevice(PreviewDevices.iPadPro.name)
 }

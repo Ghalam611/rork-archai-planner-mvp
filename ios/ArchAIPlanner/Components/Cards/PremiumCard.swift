@@ -111,3 +111,57 @@ struct FeatureCard<Content: View>: View {
             )
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Premium Card") {
+    PremiumCard {
+        VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+            Text("Premium Card Title")
+                .font(Theme.Typography.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(Theme.textPrimary)
+            
+            Text("This is a premium card with luxury styling, shadows, and elegant design elements.")
+                .font(Theme.Typography.body)
+                .foregroundStyle(Theme.textSecondary)
+                .multilineTextAlignment(.leading)
+        }
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Glass Card") {
+    GlassCard {
+        VStack(spacing: Theme.Spacing.sm) {
+            Image(systemName: "diamond.fill")
+                .font(.system(size: 24))
+                .foregroundStyle(Theme.saudiGold)
+            
+            Text("Glass Morphism")
+                .font(Theme.Typography.headline)
+                .fontWeight(.semibold)
+                .foregroundStyle(Theme.textPrimary)
+        }
+    }
+    .padding()
+    .background(Theme.backgroundGradient)
+}
+
+#Preview("Feature Card") {
+    FeatureCard(accentColor: Theme.accentEmerald, shadowColor: Theme.Shadow.gold) {
+        VStack(spacing: Theme.Spacing.md) {
+            Image(systemName: "sparkles")
+                .font(.system(size: 32))
+                .foregroundStyle(Theme.accentEmerald)
+            
+            Text("Feature Highlight")
+                .font(Theme.Typography.title3)
+                .fontWeight(.bold)
+                .foregroundStyle(Theme.textPrimary)
+        }
+        .frame(height: 120)
+    }
+    .padding()
+    .background(Theme.background)
+}

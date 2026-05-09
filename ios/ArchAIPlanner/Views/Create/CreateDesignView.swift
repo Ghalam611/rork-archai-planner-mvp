@@ -148,3 +148,39 @@ struct ResultRow: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Default") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+}
+
+#Preview("With Generated Result") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+        .previewDisplayName("With Generated Result")
+        .onAppear {
+            // Simulate generated result
+        }
+}
+
+#Preview("Loading State") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+        .previewDisplayName("Loading State")
+        .onAppear {
+            // Simulate loading state
+        }
+}
+
+#Preview("iPhone 15 Pro") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    CreateDesignView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPadPro.name)
+}

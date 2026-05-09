@@ -155,3 +155,35 @@ struct ModernTextEditor: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Text Field") {
+    VStack(spacing: Theme.Spacing.lg) {
+        ModernTextField("Email", text: .constant("user@example.com"), icon: "envelope")
+        
+        ModernTextField("Password", text: .constant("password123"), icon: "lock", isSecure: true)
+        
+        ModernTextField("Full Name", text: .constant("Ahmed Al-Rashid"), icon: "person")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Text Editor") {
+    ModernTextEditor("Requirements", text: .constant("Private family zones, shaded outdoor seating, and impressive guest arrival. Modern luxury design with traditional elements."), placeholder: "Describe your requirements...")
+        .frame(height: 150)
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Focused States") {
+    VStack(spacing: Theme.Spacing.lg) {
+        ModernTextField("Focused Field", text: .constant(""), icon: "checkmark.circle")
+        
+        ModernTextEditor("Focused Editor", text: .constant(""), placeholder: "Start typing...")
+            .frame(height: 120)
+    }
+    .padding()
+    .background(Theme.background)
+}

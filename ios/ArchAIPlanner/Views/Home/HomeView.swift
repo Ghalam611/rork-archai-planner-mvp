@@ -311,3 +311,32 @@ struct PremiumProjectCard: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Default") {
+    HomeView(appState: MockData.authenticatedAppState)
+}
+
+#Preview("Empty Projects") {
+    HomeView(appState: MockData.emptyProjectsAppState)
+}
+
+#Preview("iPhone 15 Pro") {
+    HomeView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    HomeView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    HomeView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPadPro.name)
+}
+
+#Preview("iPad Mini") {
+    HomeView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPadMini.name)
+}

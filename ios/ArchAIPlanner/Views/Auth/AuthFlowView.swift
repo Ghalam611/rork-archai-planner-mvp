@@ -117,3 +117,36 @@ struct AuthFlowView: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Default") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+}
+
+#Preview("Signup Mode") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+        .previewDisplayName("Signup Mode")
+}
+
+#Preview("Loading State") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+        .previewDisplayName("Loading State")
+        .onAppear {
+            // Simulate loading state
+        }
+}
+
+#Preview("iPhone 15 Pro") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    AuthFlowView(appState: MockData.unauthenticatedAppState)
+        .previewDevice(PreviewDevices.iPadPro.name)
+}

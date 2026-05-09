@@ -209,3 +209,62 @@ struct IconButton: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Primary Button") {
+    ModernButton("Primary Action", style: .primary) {
+        print("Primary button tapped")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Secondary Button") {
+    ModernButton("Secondary Action", style: .secondary) {
+        print("Secondary button tapped")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Outline Button") {
+    ModernButton("Outline Action", style: .outline) {
+        print("Outline button tapped")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Ghost Button") {
+    ModernButton("Ghost Action", style: .ghost) {
+        print("Ghost button tapped")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Loading Button") {
+    ModernButton("Loading...", style: .primary, isLoading: true) {
+        print("Loading button tapped")
+    }
+    .padding()
+    .background(Theme.background)
+}
+
+#Preview("Icon Button") {
+    VStack(spacing: Theme.Spacing.lg) {
+        IconButton("heart.fill", style: .primary) {
+            print("Heart button tapped")
+        }
+        
+        IconButton("star", style: .secondary) {
+            print("Star button tapped")
+        }
+        
+        IconButton("bookmark", style: .ghost) {
+            print("Bookmark button tapped")
+        }
+    }
+    .padding()
+    .background(Theme.background)
+}

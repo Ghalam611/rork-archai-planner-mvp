@@ -102,3 +102,27 @@ struct ChatBubble: View {
         }
     }
 }
+
+// MARK: - Preview Providers
+#Preview("Default") {
+    ChatView(appState: MockData.authenticatedAppState)
+}
+
+#Preview("Empty Messages") {
+    ChatView(appState: MockData.emptyProjectsAppState)
+}
+
+#Preview("iPhone 15 Pro") {
+    ChatView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15Pro.name)
+}
+
+#Preview("iPhone 15 Pro Max") {
+    ChatView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPhone15ProMax.name)
+}
+
+#Preview("iPad Pro") {
+    ChatView(appState: MockData.authenticatedAppState)
+        .previewDevice(PreviewDevices.iPadPro.name)
+}
